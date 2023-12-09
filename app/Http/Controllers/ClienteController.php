@@ -10,7 +10,11 @@ class ClienteController extends Controller
     // Mostrar todos los clientes
     public function index()
     {
-        return Cliente::all();
+        // Obtener el ID del usuario autenticado
+        $usuarioId = auth()->user()->id;
+    
+        // Devolver solo los clientes asociados a este usuario
+        return Cliente::where('usuario_id', $usuarioId)->get();
     }
 
     // Crear un nuevo cliente
@@ -18,13 +22,18 @@ class ClienteController extends Controller
     {
         $this->validate($request, [
             'nombre' => 'required|max:250',
+            'rif' => 'required|max:250',
             'direccion' => 'required|max:50',
             'telefono' => 'required|max:50',
             'vendedor' => 'required|max:250',
         ]);
-
-        $cliente = Cliente::create($request->all());
-
+    
+        // Aquí obtienes el ID del usuario autenticado
+        $usuarioId = auth()->user()->id;
+    
+        // Creas el nuevo cliente con los datos del request y agregas el usuario_id
+        $cliente = Cliente::create(array_merge($request->all(), ['usuario_id' => $usuarioId]));
+    
         return response()->json($cliente, 201);
     }
 
@@ -51,6 +60,7 @@ class ClienteController extends Controller
 
         $this->validate($request, [
             'nombre' => 'max:250',
+            'rif' => 'max:250',
             'direccion' => 'max:50',
             'telefono' => 'max:50',
             'vendedor' => 'max:250',

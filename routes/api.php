@@ -8,15 +8,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\AuthController;
 
-// Rutas existentes
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::get('/hola', function () {
-    return response()->json(['mensaje' => 'Hola Mundo']);
-});
-
+Route::middleware('auth:sanctum')->group(function () {
 // ClienteController
 Route::get('/clientes', [ClienteController::class, 'index']);
 Route::post('/clientes', [ClienteController::class, 'store']);
@@ -44,7 +36,6 @@ Route::post('/ventas', [VentaController::class, 'store']);
 Route::get('/ventas/{id}', [VentaController::class, 'show']);
 Route::put('/ventas/{id}', [VentaController::class, 'update']);
 Route::delete('/ventas/{id}', [VentaController::class, 'destroy']);
-
-Route::post('/register', [AuthController::class, 'register']);
+});
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);

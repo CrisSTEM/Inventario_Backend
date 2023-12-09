@@ -20,13 +20,11 @@ class UsuarioController extends Controller
     {
         $validatedData = $request->validate([
             'nombre' => 'required|max:50',
-            'email' => 'required|email|max:250|unique:usuarios',
             'password' => 'required|min:6',
         ]);
 
         $usuario = new Usuario();
         $usuario->nombre = $validatedData['nombre'];
-        $usuario->email = $validatedData['email'];
         $usuario->password = Hash::make($validatedData['password']);
         $usuario->save();
 
@@ -54,15 +52,11 @@ class UsuarioController extends Controller
 
         $validatedData = $request->validate([
             'nombre' => 'max:50',
-            'email' => 'email|max:250|unique:usuarios,email,' . $id,
             'password' => 'min:6',
         ]);
 
         if (isset($validatedData['nombre'])) {
             $usuario->nombre = $validatedData['nombre'];
-        }
-        if (isset($validatedData['email'])) {
-            $usuario->email = $validatedData['email'];
         }
         if (isset($validatedData['password'])) {
             $usuario->password = Hash::make($validatedData['password']);

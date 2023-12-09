@@ -11,7 +11,7 @@ class Usuario extends Authenticatable
     use HasApiTokens, Notifiable;
 
     protected $table = 'usuarios';
-    protected $fillable = ['nombre', 'email', 'password'];
+    protected $fillable = ['nombre', 'password'];
 
     public function ventas() {
         return $this->hasMany(Venta::class, 'id_usuario');
@@ -21,4 +21,8 @@ class Usuario extends Authenticatable
     {
         return $this->password;
     }
+    public function clientes() {
+        return $this->hasMany(Cliente::class, 'usuario_id');
+    }
+    
 }
